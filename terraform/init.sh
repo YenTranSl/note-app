@@ -44,6 +44,12 @@ sudo sed -i "s/host    all             all             127.0.0.1\/32            
 # Khởi động lại PostgreSQL để áp dụng thay đổi cấu hình
 sudo systemctl restart postgresql
 
+# Đặt lại mật khẩu user postgres và tạo database
+sudo -u postgres psql <<EOF
+ALTER USER postgres WITH PASSWORD 'postgres';
+CREATE DATABASE notes_app;
+EOF
+
 # Tạo thư mục cho app
 mkdir -p /home/ec2-user/app
 sudo chown -R ec2-user:ec2-user /home/ec2-user/app
@@ -55,5 +61,5 @@ chmod +x mvnw
 
 # Build và chạy Docker container
 sudo docker build -t note-app .
-sudo docker run -d -p 8080:8080 --name note-app note-app
 sudo docker rm note-app
+sudo docker run -d -p 8080:8080 --name note-app note-app
