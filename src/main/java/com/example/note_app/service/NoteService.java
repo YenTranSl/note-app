@@ -3,7 +3,6 @@ package com.example.note_app.service;
 import com.example.note_app.model.Note;
 import com.example.note_app.repository.NoteRepository;
 import java.util.List;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

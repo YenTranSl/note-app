@@ -3,8 +3,6 @@ package com.example.note_app.controller;
 import com.example.note_app.model.Note;
 import com.example.note_app.service.NoteService;
 import java.util.List;
-import org.apache.coyote.BadRequestException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,12 +32,12 @@ public class NoteController {
   }
 
   @GetMapping("/{id}")
-  public Note getById(@PathVariable Long id) throws BadRequestException {
+  public Note getById(@PathVariable Long id) {
     return noteService.findById(id);
   }
 
   @PutMapping("/{id}")
-  public Note update(@PathVariable Long id, @RequestBody Note note) throws BadRequestException {
+  public Note update(@PathVariable Long id, @RequestBody Note note) {
     note.setId(id); return noteService.updateNote(note);
   }
 
