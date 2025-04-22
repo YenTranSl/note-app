@@ -16,7 +16,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             cd note-app
-            git pull origin main
+            git pull origin master
             ./mvnw package -DskipTests
             docker build -t note-app .
             docker stop $(docker ps -q --filter ancestor=note-app) || true

@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
+source .env
 
+# Cập nhật hệ thống và cài đặt Docker + Git
 sudo yum update -y
 sudo yum install -y docker git
 sudo usermod -aG docker ec2-user
@@ -15,7 +17,7 @@ until docker info >/dev/null 2>&1; do
     sleep 3
 done
 
-# Tải và cài đặt Amazon Corretto 17
+# Tải và cài đặt Amazon Corretto 17 (Java 17)
 cd /tmp
 wget https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
 sudo mkdir -p /usr/lib/jvm
@@ -37,6 +39,7 @@ sudo yum install -y postgresql postgresql-server
 sudo postgresql-setup initdb
 sudo systemctl start postgresql
 sudo systemctl enable postgresql
+
 # Cấu hình PostgreSQL để lắng nghe kết nối từ bên ngoài
 sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /var/lib/pgsql/data/postgresql.conf
 sudo sed -i "s/host    all             all             127.0.0.1\/32            md5/host    all             all             0.0.0.0\/0            md5/" /var/lib/pgsql/data/pg_hba.conf
@@ -46,16 +49,15 @@ sudo systemctl restart postgresql
 
 # Đặt lại mật khẩu user postgres và tạo database
 sudo -u postgres psql <<EOF
-ALTER USER postgres WITH PASSWORD 'postgres';
+ALTER USER ${PG_USERNAME} WITH PASSWORD '${PG_PASSWORD}';
 CREATE DATABASE notes_app;
 EOF
 
-# Tạo thư mục cho app
+# Clone mã nguồn và build ứng dụng
 mkdir -p /home/ec2-user/app
 sudo chown -R ec2-user:ec2-user /home/ec2-user/app
 cd /home/ec2-user/app
 git clone https://github.com/YenTranSl/note-app.git .
-
 chmod +x mvnw
 ./mvnw package -DskipTests
 
