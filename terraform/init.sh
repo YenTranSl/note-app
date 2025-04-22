@@ -34,27 +34,6 @@ sudo alternatives --install /usr/bin/javac javac "$JAVA_DIR/bin/javac" 2000
 sudo alternatives --set java "$JAVA_DIR/bin/java"
 sudo alternatives --set javac "$JAVA_DIR/bin/javac"
 
-## Khởi tạo cơ sở dữ liệu PostgreSQL
-#sudo amazon-linux-extras enable postgresql14
-#sudo yum clean metadata
-#sudo yum install -y postgresql postgresql-server
-#sudo postgresql-setup initdb
-#sudo systemctl start postgresql
-#sudo systemctl enable postgresql
-#
-## Cấu hình PostgreSQL để lắng nghe kết nối từ bên ngoài
-#sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /var/lib/pgsql/data/postgresql.conf
-#sudo sed -i "s/host    all             all             127.0.0.1\/32            md5/host    all             all             0.0.0.0\/0            md5/" /var/lib/pgsql/data/pg_hba.conf
-#
-## Khởi động lại PostgreSQL để áp dụng thay đổi cấu hình
-#sudo systemctl restart postgresql
-#
-## Đặt lại mật khẩu user postgres và tạo database
-#sudo -u postgres psql <<EOF
-#ALTER USER ${PG_USERNAME} WITH PASSWORD '${PG_PASSWORD}';
-#CREATE DATABASE notes_app;
-#EOF
-
 # Clone mã nguồn và build ứng dụng
 mkdir -p /home/ec2-user/app
 sudo chown -R ec2-user:ec2-user /home/ec2-user/app
