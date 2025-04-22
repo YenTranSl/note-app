@@ -103,7 +103,7 @@ http://54.151.209.130:8080/api/notes
 
 - Đây là PoC (Proof of Concept) cho seminar môn học
 - Ứng dụng có thể mở rộng ra nhiều instance, sử dụng S3, ALB, RDS nếu cần
-- Hiện chưa áp dụng CI/CD tự động (có thể nâng cấp bằng GitHub Actions)
+- Đã áp dụng CI/CD.
 
 ---
 ### 7. Tài liệu tham khảo
