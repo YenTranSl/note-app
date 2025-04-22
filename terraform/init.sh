@@ -38,6 +38,7 @@ sudo alternatives --set javac "$JAVA_DIR/bin/javac"
 mkdir -p /home/ec2-user/app
 sudo chown -R ec2-user:ec2-user /home/ec2-user/app
 cd /home/ec2-user/app
+export HOME=/home/ec2-user
 git clone https://github.com/YenTranSl/note-app.git .
 chmod +x mvnw
 ./mvnw package -DskipTests
