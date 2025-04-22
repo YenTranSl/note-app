@@ -17,6 +17,9 @@ until docker info >/dev/null 2>&1; do
     sleep 3
 done
 
+$ docker network create yentran-network
+$ docker run -d --name postgresql -e POSTGRES_USER=${PG_USERNAME} -e POSTGRES_PASSWORD=${PG_PASSWORD} -e POSTGRES_DB=notes_app -p 5432:5432 --network yentran-network postgres:latest
+
 # Tải và cài đặt Amazon Corretto 17 (Java 17)
 cd /tmp
 wget https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
@@ -32,26 +35,26 @@ sudo alternatives --install /usr/bin/javac javac "$JAVA_DIR/bin/javac" 2000
 sudo alternatives --set java "$JAVA_DIR/bin/java"
 sudo alternatives --set javac "$JAVA_DIR/bin/javac"
 
-# Khởi tạo cơ sở dữ liệu PostgreSQL
-sudo amazon-linux-extras enable postgresql14
-sudo yum clean metadata
-sudo yum install -y postgresql postgresql-server
-sudo postgresql-setup initdb
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-
-# Cấu hình PostgreSQL để lắng nghe kết nối từ bên ngoài
-sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /var/lib/pgsql/data/postgresql.conf
-sudo sed -i "s/host    all             all             127.0.0.1\/32            md5/host    all             all             0.0.0.0\/0            md5/" /var/lib/pgsql/data/pg_hba.conf
-
-# Khởi động lại PostgreSQL để áp dụng thay đổi cấu hình
-sudo systemctl restart postgresql
-
-# Đặt lại mật khẩu user postgres và tạo database
-sudo -u postgres psql <<EOF
-ALTER USER ${PG_USERNAME} WITH PASSWORD '${PG_PASSWORD}';
-CREATE DATABASE notes_app;
-EOF
+## Khởi tạo cơ sở dữ liệu PostgreSQL
+#sudo amazon-linux-extras enable postgresql14
+#sudo yum clean metadata
+#sudo yum install -y postgresql postgresql-server
+#sudo postgresql-setup initdb
+#sudo systemctl start postgresql
+#sudo systemctl enable postgresql
+#
+## Cấu hình PostgreSQL để lắng nghe kết nối từ bên ngoài
+#sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /var/lib/pgsql/data/postgresql.conf
+#sudo sed -i "s/host    all             all             127.0.0.1\/32            md5/host    all             all             0.0.0.0\/0            md5/" /var/lib/pgsql/data/pg_hba.conf
+#
+## Khởi động lại PostgreSQL để áp dụng thay đổi cấu hình
+#sudo systemctl restart postgresql
+#
+## Đặt lại mật khẩu user postgres và tạo database
+#sudo -u postgres psql <<EOF
+#ALTER USER ${PG_USERNAME} WITH PASSWORD '${PG_PASSWORD}';
+#CREATE DATABASE notes_app;
+#EOF
 
 # Clone mã nguồn và build ứng dụng
 mkdir -p /home/ec2-user/app
@@ -64,4 +67,4 @@ chmod +x mvnw
 # Build và chạy Docker container
 sudo docker build -t note-app .
 sudo docker rm note-app
-sudo docker run -d -p 8080:8080 --name note-app note-app
+sudo docker run -d --name note-app -p 8080:8080 -e PG_URL=${PG_URL} PG_USERNAME=${PG_USERNAME} PG_PASSWORD=${PG_PASSWORD} --network yentran-network note-app
