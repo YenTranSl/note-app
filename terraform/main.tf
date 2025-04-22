@@ -7,7 +7,7 @@ provider "aws" {
 # Tao cap khoa SSH
 resource "aws_key_pair" "se400" {
   key_name   = "se400_key_pair"
-  public_key = file("D:/Seminar_CNPM/.ssh/id_rsa.pub")
+  public_key = file("../.ssh/id_rsa.pub")
 }
 
 # Tao may chu EC2
