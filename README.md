@@ -34,7 +34,7 @@ Giới thiệu quy trình tự động hóa triển khai hạ tầng và ứng d
   - [Terraform](https://developer.hashicorp.com/terraform/downloads)
   - [Git](https://git-scm.com/)
   - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-> 📌 *Lưu ý:* Sau khi cài đặt `AWS CLI` cần tiến hành cấu hình AWS.
+📌 *Lưu ý:* Sau khi cài đặt `AWS CLI` cần tiến hành cấu hình AWS.
 ```bash
 aws configure --profile myprofile
 ```
