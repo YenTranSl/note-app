@@ -15,9 +15,14 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
           script: |
-            cd note-app
+            cd /home/ec2-user/note-app
+
+            # Tạo file .env từ GitHub Secret
+            echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+
             git pull origin master
             ./mvnw package -DskipTests
             docker build -t note-app .
+
             docker stop $(docker ps -q --filter ancestor=note-app) || true
             docker run -d -p 8080:8080 note-app
