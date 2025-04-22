@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-source .env
 
 # Cập nhật hệ thống và cài đặt Docker + Git
 sudo yum update -y
@@ -17,8 +16,8 @@ until docker info >/dev/null 2>&1; do
     sleep 3
 done
 
-$ docker network create yentran-network
-$ docker run -d --name postgresql -e POSTGRES_USER=${PG_USERNAME} -e POSTGRES_PASSWORD=${PG_PASSWORD} -e POSTGRES_DB=notes_app -p 5432:5432 --network yentran-network postgres:latest
+sudo docker network create yentran-network
+sudo docker run -d --name postgresql -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=notes_app -p 5432:5432 --network yentran-network postgres:latest
 
 # Tải và cài đặt Amazon Corretto 17 (Java 17)
 cd /tmp
@@ -67,4 +66,4 @@ chmod +x mvnw
 # Build và chạy Docker container
 sudo docker build -t note-app .
 sudo docker rm note-app
-sudo docker run -d --name note-app -p 8080:8080 -e PG_URL=${PG_URL} PG_USERNAME=${PG_USERNAME} PG_PASSWORD=${PG_PASSWORD} --network yentran-network note-app
+sudo docker run -d --name note-app -p 8080:8080 -e PG_URL=jdbc:postgresql://postgresql:5432/notes_app PG_USERNAME=postgres PG_PASSWORD=postgres --network yentran-network note-app
