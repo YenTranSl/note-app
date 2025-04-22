@@ -17,10 +17,11 @@ jobs:
           script: |
             cd /home/ec2-user/note-app
 
+            git pull origin master
+            
             # Tạo file .env từ GitHub Secret
             echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
 
-            git pull origin master
             ./mvnw package -DskipTests
             docker build -t note-app .
 
