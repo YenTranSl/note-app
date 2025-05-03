@@ -93,7 +93,7 @@ Sau khi chạy `apply`, Terraform sẽ thực hiện:
 Mở trình duyệt và truy cập:
 
 ```
-[http://18.140.67.249:8080/api/notes](http://18.140.67.249:8080/api/notes)
+http://18.140.67.249:8080/api/notes
 ```
 
 > 📌 *Lưu ý:* `18.140.67.249` là public IP của EC2 instance vừa được tạo, IP này sẽ khác nhau với mỗi instance.
