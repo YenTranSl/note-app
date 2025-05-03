@@ -26,4 +26,4 @@ jobs:
             docker build -t note-app .
 
             docker stop $(docker ps -q --filter ancestor=note-app) || true
-            docker run -d -p 8080:8080 note-app -e PG_URL=${PG_URL} -e PG_USERNAME=${PG_USERNAME} -e PG_PASSWORD=${PG_PASSWORD}
+            docker run -d --name note-app -p 8080:8080 -e PG_URL=jdbc:postgresql://postgresql:5432/notes_app -e PG_USERNAME=postgres -e PG_PASSWORD=postgres --network yentran-network note-app
