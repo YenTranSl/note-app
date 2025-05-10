@@ -45,5 +45,4 @@ chmod +x mvnw
 
 # Build và chạy Docker container
 sudo docker build -t note-app .
-sudo docker rm note-app
 sudo docker run -d --name note-app -p 8080:8080 -e PG_URL=jdbc:postgresql://postgresql:5432/notes_app -e PG_USERNAME=postgres -e PG_PASSWORD=postgres --network yentran-network note-app
